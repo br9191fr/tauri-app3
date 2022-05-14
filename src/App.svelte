@@ -1,12 +1,10 @@
 <script lang="ts">
     import {invoke} from '@tauri-apps/api/tauri'
+    import {onMount} from "svelte";
 
     export let name: string;
     let container;
     let info: string = 'Empty';
-
-    invoke('my_custom_command')
-
     function call_rust() {
         invoke('cmd_with_return')
     }
@@ -38,6 +36,8 @@
             })
             .catch((e) => console.error(e))
     }
+    onMount(() => build_controls())
+    invoke('end_of_load')
 </script>
 
 <main>
@@ -48,7 +48,6 @@
     <div bind:this={container}></div>
     <button on:click={call_rust}>Click to call rust</button>
     <button on:click={test_me}>Full command</button>
-    <button on:click={build_controls}>Build controls</button>
     <div id="result">{info}</div>
 </main>
 
@@ -69,7 +68,7 @@
 
     @media (min-width: 640px) {
         main {
-            max-width: none;
+            max-width: 1024px;
         }
     }
 </style>

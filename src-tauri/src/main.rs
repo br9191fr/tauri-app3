@@ -19,9 +19,15 @@ fn my_custom_command() {
 }
 
 #[tauri::command]
+fn end_of_load() {
+    println!("Load ended");
+}
+
+#[tauri::command]
 fn cmd_with_return() {
     println!("Someone called me");
 }
+
 #[tauri::command]
 async fn full_command(number: usize) -> Result<CustomResponse, String> {
     println!("full command called from JS");
@@ -35,9 +41,10 @@ async fn full_command(number: usize) -> Result<CustomResponse, String> {
         Err("No result".into())
     }
 }
+
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![my_custom_command,cmd_with_return,full_command])
+        .invoke_handler(tauri::generate_handler![my_custom_command,cmd_with_return,full_command,end_of_load])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
